@@ -189,7 +189,8 @@ all in **integer**. Remember the encoding way of `clients` and `origins` describ
 
     ./webcachesim test.tr RTT_GQD 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50
 
-####LRU Cache on RTT Platform
+
+#### LRU Cache on RTT Platform
 **params**: `cache_number`-the number of caches in the system, `clinet_number`-the number of different clinets in the system, `origin_number`-the number of different origin servers in the system, `file_path`-the file path of the text file recording the two rtt tables. *be aware that only GQD cache need param timer*
 
     ./webcachesim test.tr RTT_LRU 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50
