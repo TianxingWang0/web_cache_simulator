@@ -184,7 +184,6 @@ In the trace file, each line present one request, contains 4 part:
 
     client_index<space>content_id<space>content_size<space>origin_index
 all in **integer**. Remember the encoding way of `clients` and `origins` described before.
-
 #### GQD Cache on RTT Platform
 **params**: `cache_number`-the number of caches in the system, `clinet_number`-the number of different clinets in the system, `origin_number`-the number of different origin servers in the system, `file_path`-the file path of the text file recording the two rtt tables, `timer`-the time span life for each content in GQD cache
 
