@@ -3,18 +3,61 @@
 
 #include "request.h"
 
-// CacheObject is used by caching policies to store a representation of an
-// "object, i.e., the object's id and its size
-struct CacheObject {
-  IdType id;
-  uint64_t size;
+// CacheObject is used by caching policies to store a representation of an "object, i.e., the object's id and its size
+class CacheObject
+{
+public:
+    IdType id;
+    uint64_t size;
 
-  CacheObject(SimpleRequest *req) : id(req->getId()), size(req->getSize()) {}
+    CacheObject(SimpleRequest *req)
+        : id(req->getId()),
+          size(req->getSize())
+    {
+    }
 
-  // comparison is based on all three properties
-  bool operator==(const CacheObject &rhs) const {
-    return (rhs.id == id) && (rhs.size == size);
-  }
+    // comparison is based on all three properties
+    bool operator==(const CacheObject &rhs) const
+    {
+        return (rhs.id == id) && (rhs.size == size);
+    }
+};
+
+class QOECacheObject: public CacheObject
+{
+public:
+    double qoe;
+    uint32_t timer;
+    static uint32_t max_time;
+    uint32_t freq;
+
+
+    QOECacheObject(SimpleRequest *req, double q):CacheObject(req)
+    {
+        qoe = q;
+    }
+
+    void reset_timer() {
+        timer = 1;
+    }
+
+    void hit() {
+        timer = 1;
+        freq++;
+    }
+
+    void update() {   
+        if (timer != max_time) {
+            timer++;
+        }
+    }
+
+    double getQOE() {
+        if (timer == max_time) {
+            return 0;
+        }
+        return qoe * freq / timer;
+    }
 };
 
 // forward definition of extendable hash

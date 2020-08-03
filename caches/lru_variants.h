@@ -28,17 +28,20 @@ protected:
   virtual void hit(lruCacheMapType::const_iterator it, uint64_t size);
 
 public:
-  LRUCache() : Cache() { _requestNum = 0; }
-  virtual ~LRUCache() {}
+    LRUCache()
+        : Cache()
+    {
+    }
+    virtual ~LRUCache()
+    {
+    }
 
-  virtual bool lookup(SimpleRequest *req);
-  virtual void admit(SimpleRequest *req);
-  virtual void evict(SimpleRequest *req);
-  virtual void evict();
-  virtual SimpleRequest *evict_return();
-  virtual int
-  requestNum(); // return request number and unique file number   -- ymj
-  virtual int uniqueFileNum();
+    virtual bool lookup(SimpleRequest* req);
+    virtual void admit(SimpleRequest* req);
+    virtual void admit(SimpleRequest* req, double q) {admit(req);};
+    virtual void evict(SimpleRequest* req);
+    virtual void evict();
+    virtual SimpleRequest* evict_return();
 };
 
 static Factory<LRUCache> factoryLRU("LRU");

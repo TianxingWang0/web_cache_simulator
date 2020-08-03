@@ -51,24 +51,50 @@ public:
     while (_currentSize > _cacheSize) {
       evict();
     }
-  }
-  virtual void setPar(std::string parName, std::string parValue) {}
-  virtual void init_mapper(){};
-  virtual void print_hash_space(){};
-  virtual bool request(SimpleRequest *req) { return false; };
+    virtual ~Cache(){};
 
-  uint64_t getCurrentSize() const { return (_currentSize); }
-  uint64_t getSize() const { return (_cacheSize); }
+    // main cache management functions (to be defined by a policy)
+    virtual bool lookup(SimpleRequest* req) = 0;
+    virtual void admit(SimpleRequest* req) = 0;
+    virtual void admit(SimpleRequest* req, double q) {};
+    virtual void update() {};
+    virtual void evict(SimpleRequest* req) = 0;
+    virtual void evict() = 0;
 
-  // helper functions (factory pattern)
-  static void registerType(std::string name, CacheFactory *factory) {
-    get_factory_instance()[name] = factory;
-  }
-  static std::unique_ptr<Cache> create_unique(std::string name) {
-    std::unique_ptr<Cache> Cache_instance;
-    if (get_factory_instance().count(name) != 1) {
-      std::cerr << "unkown cacheType" << std::endl;
-      return nullptr;
+    // configure cache parameters
+    virtual void setSize(uint64_t cs) {
+        _cacheSize = cs;
+        while (_currentSize > _cacheSize) {
+            evict();
+        }
+    }
+    virtual void setPar(std::string parName, std::string parValue) {}
+    virtual void init_mapper() {};
+    virtual void init() {};
+    virtual void print_hash_space() {};
+    virtual bool request(SimpleRequest* req) { return false;};
+    virtual bool request(SimpleRequest* req, uint8_t client, uint8_t origin) {return false;};
+    virtual double get_sum_QoE() {return 0;};
+
+    uint64_t getCurrentSize() const {
+        return(_currentSize);
+    }
+    uint64_t getSize() const {
+        return(_cacheSize);
+    }
+
+    // helper functions (factory pattern)
+    static void registerType(std::string name, CacheFactory *factory) {
+        get_factory_instance()[name] = factory;
+    }
+    static std::unique_ptr<Cache> create_unique(std::string name) {
+        std::unique_ptr<Cache> Cache_instance;
+        if(get_factory_instance().count(name) != 1) {
+            std::cerr << "unkown cacheType" << std::endl;
+            return nullptr;
+        }
+        Cache_instance = get_factory_instance()[name]->create_unique();
+        return Cache_instance;
     }
     Cache_instance = get_factory_instance()[name]->create_unique();
     return Cache_instance;
