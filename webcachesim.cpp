@@ -108,16 +108,19 @@ int main(int argc, char *argv[]) {
     else if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0) {   // rtt cache system
         // the trace format is <client ip, content id, content size, origin ip>
         webcache->init();
-        // while (infile >> client >> id >> size >> origin) {
-        //     reqs++;
-        //     reqs_size += size;
-        //     req->reinit(id, size);
-        //     if (webcache->request(req, client, origin))
-        //     {
-        //         hits++;
-        //         hits_size += size;
-        //     }
-        // }
+        while (infile >> client >> id >> size >> origin) {
+            reqs++;
+            reqs_size += size;
+            req->reinit(id, size);
+            if (webcache->request(req, client, origin))
+            {
+                hits++;
+                hits_size += size;
+            }
+        }
+
+        /*
+          fack trace
         while (infile >> t >> id >> size) {
             reqs++;
             reqs_size += size;
@@ -131,6 +134,7 @@ int main(int argc, char *argv[]) {
                 hits_size += size;
             }
         }
+        */
 
     }
     else // cluster variants
