@@ -80,4 +80,21 @@ public:
 
 static Factory<RTT_LRU_Cache> factoryRTT_LRU("RTT_LRU");
 
+
+class RTT_AptSize_Cache : public RTT_GQD_Cache
+{
+protected:
+    AdaptSizeCache *_caches_list;
+
+public:
+    virtual void setPar(std::string parName, std::string parValue);
+    virtual void update() {};
+    bool request(SimpleRequest *req, uint8_t client, uint8_t origin);
+};
+
+static Factory<RTT_AptSize_Cache> factoryRTT_AptSize("RTT_AptSize");
+
+
+
+
 #endif

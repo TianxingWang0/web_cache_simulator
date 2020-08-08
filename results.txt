@@ -1,0 +1,46 @@
+
+time duration : 37ms
+trace : test.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50 
+reqs : 10492	hits : 9325	hit rate : 0.888772
+reqs size : 19130	hit size : 17012	hit size rate : 0.889284
+QoE : 100
+
+time duration : 120ms
+trace : test.tr
+cacheType : RTT_LRU	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt 
+reqs : 10492	hits : 9532	hit rate : 0.908502
+reqs size : 19130	hit size : 17395	hit size rate : 0.909305
+QoE : 100
+
+time duration : 24ms
+trace : test.tr
+cacheType : LRU	cache_size : 1000	paramSummary : 
+reqs : 10492	hits : 9532	hit rate : 0.908502
+reqs size : 10492	hit size : 9532	hit size rate : 0.908502
+
+time duration : 70ms
+trace : test.tr
+cacheType : RTT_AptSize	cache_size : 1000	paramSummary : cache_number=3 t=10000 i=5 client_number=3 origin_number=3 file_path=rtt_file.txt 
+reqs : 10492	hits : 9532	hit rate : 0.908502
+reqs size : 19130	hit size : 17395	hit size rate : 0.909305
+
+time duration : 74ms
+trace : test.tr
+cacheType : RTT_LRU	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt 
+reqs : 10492	hits : 9532	hit rate : 0.908502
+reqs size : 19130	hit size : 17395	hit size rate : 0.909305
+QoE : 100
+
+time duration : 90ms
+trace : test.tr
+cacheType : RTT_AptSize	cache_size : 1000	paramSummary : cache_number=3 t=10000 i=5 client_number=3 origin_number=3 file_path=rtt_file.txt 
+reqs : 10492	hits : 9532	hit rate : 0.908502
+reqs size : 19130	hit size : 17395	hit size rate : 0.909305
+
+time duration : 60ms
+trace : test.tr
+cacheType : RTT_LRU	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt 
+reqs : 10492	hits : 9532	hit rate : 0.908502
+reqs size : 19130	hit size : 17395	hit size rate : 0.909305
+QoE : 100
