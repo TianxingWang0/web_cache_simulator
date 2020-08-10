@@ -77,8 +77,8 @@ int main(int argc, char *argv[]) {
     ifstream infile;
     long long reqs = 0, hits = 0;
     long long reqs_size = 0, hits_size = 0;
-    long long t, id, size;
-    uint8_t client, origin;
+    long long t, id, size, client, origin;
+    //uint8_t client, origin;
     SimpleRequest *req = new SimpleRequest(0, 0);
 
     cerr << "running..." << endl;
@@ -110,6 +110,7 @@ int main(int argc, char *argv[]) {
         // the trace format is <client ip, content id, content size, origin ip>
         webcache->init();
         while (infile >> client >> id >> size >> origin) {
+            //std::cout << client << " " << id << " " << size << " " << origin << std::endl;
             reqs++;
             reqs_size += size;
             req->reinit(id, size);

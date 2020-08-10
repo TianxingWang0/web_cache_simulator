@@ -44,3 +44,24 @@ cacheType : RTT_LRU	cache_size : 1000	paramSummary : cache_number=3 client_numbe
 reqs : 10492	hits : 9532	hit rate : 0.908502
 reqs size : 19130	hit size : 17395	hit size rate : 0.909305
 QoE : 100
+
+time duration : 177ms
+trace : test1.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50 
+reqs : 8	hits : 3	hit rate : 0.375
+reqs size : 264	hit size : 122	hit size rate : 0.462121
+QoE : 99.9968
+
+time duration : 114ms
+trace : test1.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50 
+reqs : 8	hits : 3	hit rate : 0.375
+reqs size : 264	hit size : 122	hit size rate : 0.462121
+QoE : 99.9968
+
+time duration : 30ms
+trace : test1.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50 
+reqs : 8	hits : 3	hit rate : 0.375
+reqs size : 264	hit size : 122	hit size rate : 0.462121
+QoE : 99.9968
