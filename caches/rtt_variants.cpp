@@ -342,3 +342,160 @@ bool RTT_AptSize_Cache::request(SimpleRequest *req, uint8_t client, uint8_t orig
     norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
     return false;
 }
+
+
+void RTT_GDSF_Cache::setPar(std::string parName, std::string parValue)
+{
+    if (parName.compare("cache_number") == 0)
+    {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        cache_number = n;
+        _caches_list = new GDSFCache[cache_number];
+        for (int i = 0; i < cache_number; ++i)
+        {
+            _caches_list[i].setSize(_cacheSize);
+        }
+    }
+    else if (parName.compare("client_number") == 0) {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        client_number = n;
+    }
+    else if (parName.compare("origin_number") == 0) {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        origin_number = n;
+    }
+    else if (parName.compare("file_path") == 0)
+    {
+        rtt_file = parValue;
+    }
+    else
+    {
+        std::cerr << "unrecognized parameter: " << parName << std::endl;
+    }
+}
+
+bool RTT_GDSF_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
+{
+    for (int i = 0; i < cache_number; i++)
+    {
+        if (_caches_list[i].lookup(req)) {
+            sum_QoE += rtt2qoe(clients2caches[client][i]);
+            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
+            return true;
+        }
+            
+    }
+    _caches_list[redirect_table[client][origin]].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    return false;
+}
+
+void RTT_LRUK_Cache::setPar(std::string parName, std::string parValue)
+{
+    if (parName.compare("cache_number") == 0)
+    {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        cache_number = n;
+        _caches_list = new LRUKCache[cache_number];
+        for (int i = 0; i < cache_number; ++i)
+        {
+            _caches_list[i].setSize(_cacheSize);
+        }
+    }
+    else if (parName.compare("client_number") == 0) {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        client_number = n;
+    }
+    else if (parName.compare("origin_number") == 0) {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        origin_number = n;
+    }
+    else if (parName.compare("file_path") == 0)
+    {
+        rtt_file = parValue;
+    }
+    else if (parName.compare("k") == 0) {
+        for (int i = 0; i < cache_number; ++i)
+        {
+            _caches_list[i].setPar("k", parValue);
+        }
+    }
+    else
+    {
+        std::cerr << "unrecognized parameter: " << parName << std::endl;
+    }
+}
+
+bool RTT_LRUK_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
+{
+    for (int i = 0; i < cache_number; i++)
+    {
+        if (_caches_list[i].lookup(req)) {
+            sum_QoE += rtt2qoe(clients2caches[client][i]);
+            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
+            return true;
+        }
+            
+    }
+    _caches_list[redirect_table[client][origin]].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    return false;
+}
+
+void RTT_LFUDA_Cache::setPar(std::string parName, std::string parValue)
+{
+    if (parName.compare("cache_number") == 0)
+    {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        cache_number = n;
+        _caches_list = new LFUDACache[cache_number];
+        for (int i = 0; i < cache_number; ++i)
+        {
+            _caches_list[i].setSize(_cacheSize);
+        }
+    }
+    else if (parName.compare("client_number") == 0) {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        client_number = n;
+    }
+    else if (parName.compare("origin_number") == 0) {
+        const int n = stoull(parValue);
+        assert(n > 1);
+        origin_number = n;
+    }
+    else if (parName.compare("file_path") == 0)
+    {
+        rtt_file = parValue;
+    }
+    else
+    {
+        std::cerr << "unrecognized parameter: " << parName << std::endl;
+    }
+}
+
+bool RTT_LFUDA_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
+{
+    for (int i = 0; i < cache_number; i++)
+    {
+        if (_caches_list[i].lookup(req)) {
+            sum_QoE += rtt2qoe(clients2caches[client][i]);
+            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
+            return true;
+        }
+            
+    }
+    _caches_list[redirect_table[client][origin]].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    return false;
+}

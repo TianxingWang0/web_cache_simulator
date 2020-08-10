@@ -86,7 +86,8 @@ int main(int argc, char *argv[]) {
     infile.open(path);
     cout << cacheType << endl;
     if (cacheType.compare("SF") && cacheType.compare("CH") && cacheType.compare("SFM") &&
-        cacheType.compare("RTT_GQD") && cacheType.compare("RTT_LRU") && cacheType.compare("RTT_AptSize"))
+        cacheType.compare("RTT_GQD") && cacheType.compare("RTT_LRU") && cacheType.compare("RTT_AptSize") && 
+        cacheType.compare("RTT_GDSF") && cacheType.compare("RTT_LRUK") && cacheType.compare("RTT_LFUDA"))
     {   // single cache 
         while (infile >> t >> id >> size)
         {
@@ -106,7 +107,9 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    else if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0 || cacheType.compare("RTT_AptSize") == 0) {   // rtt cache system
+    else if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0 ||
+             cacheType.compare("RTT_AptSize") == 0 || cacheType.compare("RTT_GDSF") == 0 || 
+             cacheType.compare("RTT_LRUK") == 0 || cacheType.compare("RTT_LFUDA") == 0) {   // rtt cache system
         // the trace format is <client ip, content id, content size, origin ip>
         webcache->init();
         while (infile >> client >> id >> size >> origin) {
@@ -122,7 +125,7 @@ int main(int argc, char *argv[]) {
                 hits_size += size;
             }
         } 
-        //   //fack trace
+        // //fack trace
         // while (infile >> t >> id >> size) {
         //     reqs++;
         //     reqs_size += size;
@@ -170,7 +173,9 @@ int main(int argc, char *argv[]) {
     cout << "cacheType : " << cacheType << "\tcache_size : " << cache_size << "\tparamSummary : " << paramSummary << endl;
     cout << "reqs : " << reqs << "\thits : " << hits << "\thit rate : " << double(hits) / reqs << endl;
     cout << "reqs size : " << reqs_size << "\thit size : " << hits_size << "\thit size rate : " << double(hits_size) / reqs_size << endl;
-    if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0 || cacheType.compare("RTT_AptSize") == 0) {
+    if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0 ||
+        cacheType.compare("RTT_AptSize") == 0 || cacheType.compare("RTT_GDSF") == 0 ||
+        cacheType.compare("RTT_LRUK") == 0 || cacheType.compare("RTT_LFUDA") == 0) {
         cout << "QoE : " << webcache->get_sum_QoE() / reqs << endl;
         cout << "Normalized QoE : " << webcache->get_norm_sum_QoE() / reqs << endl;
     }
@@ -181,7 +186,9 @@ int main(int argc, char *argv[]) {
     outTp << "cacheType : " << cacheType << "\tcache_size : " << cache_size << "\tparamSummary : " << paramSummary << endl;
     outTp << "reqs : " << reqs << "\thits : " << hits << "\thit rate : " << double(hits) / reqs << endl;
     outTp << "reqs size : " << reqs_size << "\thit size : " << hits_size << "\thit size rate : " << double(hits_size) / reqs_size << endl;
-    if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0) {
+    if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0 ||
+        cacheType.compare("RTT_AptSize") == 0 || cacheType.compare("RTT_GDSF") == 0 ||
+        cacheType.compare("RTT_LRUK") == 0 || cacheType.compare("RTT_LFUDA") == 0) {
         outTp << "QoE : " << webcache->get_sum_QoE() / reqs << endl;
         outTp << "Normalized QoE : " << webcache->get_norm_sum_QoE() / reqs << endl;
     }

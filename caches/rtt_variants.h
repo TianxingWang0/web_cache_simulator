@@ -100,7 +100,43 @@ public:
 
 static Factory<RTT_AptSize_Cache> factoryRTT_AptSize("RTT_AptSize");
 
+class RTT_GDSF_Cache : public RTT_GQD_Cache
+{
+protected:
+    GDSFCache *_caches_list;
 
+public:
+    virtual void setPar(std::string parName, std::string parValue);
+    virtual void update() {};
+    bool request(SimpleRequest *req, uint8_t client, uint8_t origin);
+};
 
+static Factory<RTT_GDSF_Cache> factoryRTT_GDSF("RTT_GDSF");
+
+class RTT_LRUK_Cache : public RTT_GQD_Cache
+{
+protected:
+    LRUKCache *_caches_list;
+
+public:
+    virtual void setPar(std::string parName, std::string parValue);
+    virtual void update() {};
+    bool request(SimpleRequest *req, uint8_t client, uint8_t origin);
+};
+
+static Factory<RTT_LRUK_Cache> factoryRTT_LRUK("RTT_LRUK");
+
+class RTT_LFUDA_Cache : public RTT_GQD_Cache
+{
+protected:
+    LFUDACache *_caches_list;
+
+public:
+    virtual void setPar(std::string parName, std::string parValue);
+    virtual void update() {};
+    bool request(SimpleRequest *req, uint8_t client, uint8_t origin);
+};
+
+static Factory<RTT_LFUDA_Cache> factoryRTT_LFUDA("RTT_LFUDA");
 
 #endif

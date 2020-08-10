@@ -184,6 +184,7 @@ In the trace file, each line present one request, contains 4 part:
 
     client_index<space>content_id<space>content_size<space>origin_index
 all in **integer**. Remember the encoding way of `clients` and `origins` described before.
+
 #### GQD Cache on RTT Platform
 **params**: `cache_number`-the number of caches in the system, `clinet_number`-the number of different clinets in the system, `origin_number`-the number of different origin servers in the system, `file_path`-the file path of the text file recording the two rtt tables, `timer`-the time span life for each content in GQD cache
 
@@ -193,7 +194,19 @@ all in **integer**. Remember the encoding way of `clients` and `origins` describ
 #### LRU Cache on RTT Platform
 **params**: `cache_number`-the number of caches in the system, `clinet_number`-the number of different clinets in the system, `origin_number`-the number of different origin servers in the system, `file_path`-the file path of the text file recording the two rtt tables. *be aware that only GQD cache need param timer*
 
-    ./webcachesim test.tr RTT_LRU 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt timer=50
+    ./webcachesim test.tr RTT_LRU 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt
+
+#### LFUDA Cache on RTT Platform
+
+    ./webcachesim test.tr RTT_LFUDA 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt
+
+#### GDSF Cache on RTT Platform
+
+    ./webcachesim test.tr RTT_GDSF 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt
+
+#### LRU-k Cache on RTT Platform
+
+    ./webcachesim test.tr RTT_LRUK 1000 cache_number=3 client_number=3 origin_number=3 file_path=rtt_file.txt k=2
 
 #### Adaptsize Cache on RTT Platform
 **params**: `cache_number`-the number of caches in the system, `clinet_number`-the number of different clinets in the system,`t` & `i`-refer to Adaptsize cache above, `origin_number`-the number of different origin servers in the system, `file_path`-the file path of the text file recording the two rtt tables. *be aware that only GQD cache need param timer*
