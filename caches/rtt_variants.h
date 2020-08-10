@@ -36,10 +36,14 @@ protected:
     int origin_number = 0;
     uint16_t **clients2caches; // [client index][caches index] is the rtt time between two ends
     uint16_t **caches2origins;  // [caches index][origin index] is the rtt time between two ends
+    double **norm_clients2caches; // [client index][caches index] is the rtt time between two ends
+    double **norm_caches2origins;  // [caches index][origin index] is the rtt time between two ends
+
     uint16_t **redirect_table; // [client index][origin index] the optimal cache index
                                // for request from `client index` stored on `origin index`
     uint32_t timer_max_time;
     double sum_QoE = 0;
+    double norm_sum_QoE = 0;
 
     double A = -1.0 / 198;
     double B = 10000.0 / 99;
@@ -59,8 +63,10 @@ public:
     virtual void evict(SimpleRequest *req){};
     virtual void evict(){};
     virtual void update();
-    virtual double rtt2qoe(uint32_t rtt);
+    virtual double rtt2qoe(int rtt);
+    double rtt2qoe(double rtt);
     virtual double get_sum_QoE() {return sum_QoE;};
+    virtual double get_norm_sum_QoE() {return norm_sum_QoE * 100;};
     bool request(SimpleRequest *req, uint8_t client, uint8_t origin);
     //virtual void setSize(uint64_t cs) {_cacheSize = cs; _currentSize = 0;};
 };

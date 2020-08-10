@@ -65,3 +65,49 @@ cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=3 client_numbe
 reqs : 8	hits : 3	hit rate : 0.375
 reqs size : 264	hit size : 122	hit size rate : 0.462121
 QoE : 99.9968
+
+time duration : 12054ms
+trace : test2.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 10092088	hits : 785082	hit rate : 0.0777918
+reqs size : 132296569084	hit size : 162689677	hit size rate : 0.00122973
+QoE : 99.912
+
+time duration : 11826ms
+trace : test2.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 10092088	hits : 785082	hit rate : 0.0777918
+reqs size : 132296569084	hit size : 162689677	hit size rate : 0.00122973
+QoE : 99.912
+
+time duration : 78ms
+trace : trace1WithOriginId.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 0	hits : 0	hit rate : -nan
+reqs size : 0	hit size : 0	hit size rate : -nan
+QoE : -nan
+Normalized QoE : -nan
+
+time duration : 17068ms
+trace : trace1WithOriginId
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 15533247	hits : 240986	hit rate : 0.0155142
+reqs size : 135086442301	hit size : 56632630	hit size rate : 0.000419233
+QoE : 99.9126
+Normalized QoE : 96.2235
+
+time duration : 17519ms
+trace : trace1WithOriginId
+cacheType : RTT_LRU	cache_size : 10000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt 
+reqs : 15533247	hits : 2735906	hit rate : 0.176132
+reqs size : 135086442301	hit size : 2158305807	hit size rate : 0.0159772
+QoE : 99.9291
+Normalized QoE : 96.6675
+
+time duration : 16271ms
+trace : trace1WithOriginId
+cacheType : RTT_GQD	cache_size : 10000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 15533247	hits : 88355	hit rate : 0.00568812
+reqs size : 135086442301	hit size : 82527156	hit size rate : 0.000610921
+QoE : 99.9099
+Normalized QoE : 96.1586

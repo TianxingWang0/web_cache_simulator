@@ -111,6 +111,8 @@ int main(int argc, char *argv[]) {
         webcache->init();
         while (infile >> client >> id >> size >> origin) {
             //std::cout << client << " " << id << " " << size << " " << origin << std::endl;
+            if (size == 0)
+                continue;
             reqs++;
             reqs_size += size;
             req->reinit(id, size);
@@ -170,6 +172,7 @@ int main(int argc, char *argv[]) {
     cout << "reqs size : " << reqs_size << "\thit size : " << hits_size << "\thit size rate : " << double(hits_size) / reqs_size << endl;
     if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0 || cacheType.compare("RTT_AptSize") == 0) {
         cout << "QoE : " << webcache->get_sum_QoE() / reqs << endl;
+        cout << "Normalized QoE : " << webcache->get_norm_sum_QoE() / reqs << endl;
     }
 
     outTp << endl;
@@ -180,6 +183,7 @@ int main(int argc, char *argv[]) {
     outTp << "reqs size : " << reqs_size << "\thit size : " << hits_size << "\thit size rate : " << double(hits_size) / reqs_size << endl;
     if (cacheType.compare("RTT_GQD") == 0 || cacheType.compare("RTT_LRU") == 0) {
         outTp << "QoE : " << webcache->get_sum_QoE() / reqs << endl;
+        outTp << "Normalized QoE : " << webcache->get_norm_sum_QoE() / reqs << endl;
     }
 
     outTp.close();

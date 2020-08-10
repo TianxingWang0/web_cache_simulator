@@ -10,6 +10,7 @@
 #include <iterator>
 #include <vector>
 #include <queue>
+#include <cmath>
 #include "rtt_variants.h"
 #include "gqd_cache.h"
 #include "gd_variants.h"
@@ -80,27 +81,43 @@ void RTT_GQD_Cache::init()
 {
     std::cerr << "init begin!" << std::endl;
     std::ifstream infile(rtt_file, std::ios::in);
+    uint16_t min_rtt = UINT16_MAX;
+    uint16_t max_rtt = 0;
     clients2caches = new uint16_t *[client_number];
+    norm_clients2caches = new double *[client_number];
     for (int row = 0; row < client_number; row++)
     {
         clients2caches[row] = new uint16_t[cache_number];
+        norm_clients2caches[row] = new double[cache_number];
         for (int col = 0; col < cache_number; col++)
         {
             infile >> clients2caches[row][col];
+            if (clients2caches[row][col] < min_rtt)
+                min_rtt = clients2caches[row][col];
+            if (clients2caches[row][col] > max_rtt) {
+                max_rtt = clients2caches[row][col];
+            }
         }
     }
     std::string line;
     getline(infile, line);
     caches2origins = new uint16_t *[cache_number];
+    norm_caches2origins = new double *[cache_number];
     for (int row = 0; row < cache_number; row++)
     {
         caches2origins[row] = new uint16_t[origin_number];
+        norm_caches2origins[row] = new double[origin_number];
         for (int col = 0; col < origin_number; col++)
         {
             infile >> caches2origins[row][col];
+            if (caches2origins[row][col] < min_rtt)
+                min_rtt = caches2origins[row][col];
+            if (caches2origins[row][col] > max_rtt) {
+                max_rtt = caches2origins[row][col];
+            }
         }
     }
-
+    double range = max_rtt - min_rtt;
     redirect_table = new uint16_t *[client_number];
     for (int client_index = 0; client_index < client_number; client_index++)
     {
@@ -144,6 +161,7 @@ void RTT_GQD_Cache::init()
     for (int i = 0; i < client_number; i++) {
         for (int j = 0; j < cache_number; j++) {
             std::cout << clients2caches[i][j] << " ";
+            norm_clients2caches[i][j] = (clients2caches[i][j] - min_rtt) / range;
         }
         std::cout << std::endl;
     }
@@ -153,6 +171,7 @@ void RTT_GQD_Cache::init()
     for (int i = 0; i < cache_number; i++) {
         for (int j = 0; j < origin_number; j++) {
             std::cout << caches2origins[i][j] << " ";
+            norm_caches2origins[i][j] = (caches2origins[i][j] - min_rtt) / range;
         }
         std::cout << std::endl;
     }
@@ -169,7 +188,7 @@ void RTT_GQD_Cache::init()
     std::cerr << "init done!" << std::endl;
 }
 
-double RTT_GQD_Cache::rtt2qoe(uint32_t rtt) {
+double RTT_GQD_Cache::rtt2qoe(int rtt) {
     if (rtt <= 200) {
         return 100;
     }
@@ -179,6 +198,15 @@ double RTT_GQD_Cache::rtt2qoe(uint32_t rtt) {
     return A * rtt + B;
 }
 
+double RTT_GQD_Cache::rtt2qoe(double rtt) {
+    if (rtt < 0.5) {
+        return 1.0 - 1.0 / (1.0 + std::exp(-(10 * rtt - 5)));
+    }
+    else {
+        return 1.0 / (1996 * rtt -996);
+    }
+}
+
 bool RTT_GQD_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
 {
     update();
@@ -186,12 +214,14 @@ bool RTT_GQD_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
     {
         if (caches_list[i].lookup(req)) {
             sum_QoE += rtt2qoe(clients2caches[client][i]);
+            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
             return true;
         }
             
     }
     caches_list[redirect_table[client][origin]].admit(req, caches2origins[redirect_table[client][origin]][origin] / req->getSize());
     sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
     return false;
 }
 
@@ -240,12 +270,14 @@ bool RTT_LRU_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
     {
         if (_caches_list[i].lookup(req)) {
             sum_QoE += rtt2qoe(clients2caches[client][i]);
+            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
             return true;
         }
             
     }
     _caches_list[redirect_table[client][origin]].admit(req);
     sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
     return false;
 }
 
@@ -300,11 +332,13 @@ bool RTT_AptSize_Cache::request(SimpleRequest *req, uint8_t client, uint8_t orig
     {
         if (_caches_list[i].lookup(req)) {
             sum_QoE += rtt2qoe(clients2caches[client][i]);
+            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
             return true;
         }
             
     }
     _caches_list[redirect_table[client][origin]].admit(req);
     sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
     return false;
 }

@@ -75,6 +75,7 @@ public:
     virtual bool request(SimpleRequest* req) { return false;};
     virtual bool request(SimpleRequest* req, uint8_t client, uint8_t origin) {return false;};
     virtual double get_sum_QoE() {return 0;};
+    virtual double get_norm_sum_QoE() {return 0;};
 
     uint64_t getCurrentSize() const {
         return(_currentSize);
