@@ -45,8 +45,8 @@ protected:
     double sum_QoE = 0;
     double norm_sum_QoE = 0;
 
-    double A = -1.0 / 198;
-    double B = 10000.0 / 99;
+    double A = -1.0 / 199;
+    double B = 20000.0 / 199;
 
 private:
     GQDCache *caches_list; // Caches cluster

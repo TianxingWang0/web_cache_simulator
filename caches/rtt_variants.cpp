@@ -189,10 +189,10 @@ void RTT_GQD_Cache::init()
 }
 
 double RTT_GQD_Cache::rtt2qoe(int rtt) {
-    if (rtt <= 200) {
+    if (rtt <= 100) {
         return 100;
     }
-    if (rtt >20000) {
+    if (rtt > 20000) {
         return 0;
     }
     return A * rtt + B;

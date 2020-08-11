@@ -37,6 +37,17 @@ void GQDCache::admit(SimpleRequest *req, double q)
         LOG("L", _cacheSize, req->getId(), size);
         return;
     }
+    if (_currentSize + size > _cacheSize) {
+        double spare_size = 0.0;
+        QOEListIteratorType lit = _cacheList.end();
+        lit--;
+        while (lit->getQOE() <= q && spare_size < size) {
+            spare_size += lit->size;
+            lit--;
+        }
+        if (spare_size < size)
+            return;
+    }
     // check eviction needed
     while (_currentSize + size > _cacheSize)
     {
