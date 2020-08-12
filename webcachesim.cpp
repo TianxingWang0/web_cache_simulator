@@ -112,33 +112,33 @@ int main(int argc, char *argv[]) {
              cacheType.compare("RTT_LRUK") == 0 || cacheType.compare("RTT_LFUDA") == 0) {   // rtt cache system
         // the trace format is <client ip, content id, content size, origin ip>
         webcache->init();
-        // while (infile >> client >> id >> size >> origin) {
-        //     //std::cout << client << " " << id << " " << size << " " << origin << std::endl;
-        //     if (size == 0)
-        //         continue;
-        //     reqs++;
-        //     reqs_size += size;
-        //     req->reinit(id, size);
-        //     if (webcache->request(req, client, origin))
-        //     {
-        //         hits++;
-        //         hits_size += size;
-        //     }
-        // } 
-        //fack trace
-        while (infile >> t >> id >> size) {
+        while (infile >> client >> id >> size >> origin) {
+            //std::cout << client << " " << id << " " << size << " " << origin << std::endl;
+            if (size == 0)
+                continue;
             reqs++;
             reqs_size += size;
             req->reinit(id, size);
-            //client = std::rand() % 3;
-            client = id % 3;
-            origin = id % 3;
             if (webcache->request(req, client, origin))
             {
                 hits++;
                 hits_size += size;
             }
-        }
+        } 
+        // //fack trace
+        // while (infile >> t >> id >> size) {
+        //     reqs++;
+        //     reqs_size += size;
+        //     req->reinit(id, size);
+        //     //client = std::rand() % 3;
+        //     client = id % 3;
+        //     origin = id % 3;
+        //     if (webcache->request(req, client, origin))
+        //     {
+        //         hits++;
+        //         hits_size += size;
+        //     }
+        // }
     }
     else // cluster variants
     {
