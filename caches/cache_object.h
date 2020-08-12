@@ -35,9 +35,6 @@ public:
     QOECacheObject(SimpleRequest *req, double q):CacheObject(req)
     {
         qoe = q;
-    }
-
-    void reset_timer() {
         timer = 1;
     }
 
@@ -49,6 +46,9 @@ public:
     void update() {   
         if (timer != max_time) {
             timer++;
+        }
+        else {
+            freq = 1;
         }
     }
 
@@ -84,5 +84,6 @@ template <class T> inline void hash_combine(std::size_t &seed, const T &v) {
   std::hash<T> hasher;
   seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
+
 
 #endif /* CACHE_HASH_H */

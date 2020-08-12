@@ -28,8 +28,13 @@ bool GQDCache::lookup(SimpleRequest *req)
     return false;
 }
 
+bool obj_cmp (QOECacheObject& c1,QOECacheObject& c2) {
+    return c1.getQOE() > c2.getQOE();
+}
+
 void GQDCache::admit(SimpleRequest *req, double q)
 {
+    _cacheList.sort(obj_cmp);
     const uint64_t size = req->getSize();
     // object feasible to store?
     if (size > _cacheSize)
@@ -38,10 +43,14 @@ void GQDCache::admit(SimpleRequest *req, double q)
         return;
     }
     if (_currentSize + size > _cacheSize) {
-        double spare_size = 0.0;
+        //uint64_t spare_size = _recycleBinSize;
+        uint64_t spare_size = 0;
         QOEListIteratorType lit = _cacheList.end();
         lit--;
         while (lit->getQOE() <= q && spare_size < size) {
+            // if (lit->getQOE()) {
+            //     spare_size += lit->size;
+            // }
             spare_size += lit->size;
             lit--;
         }
@@ -83,6 +92,16 @@ void GQDCache::admit(SimpleRequest *req, double q)
 void GQDCache::evict()
 {
     // evict least popular (i.e. last element)
+    // if (_recycleBinMap.size() > 0) {
+    //     auto it = _recycleBinMap.begin();
+    //     CacheObject obj = it->first;
+    //     _currentSize -= obj.size;
+    //     _cacheMap.erase(obj);
+    //     _cacheList.erase(it->second);
+    //     _recycleBinSize -= obj.size;
+    //     _recycleBinMap.erase(obj);
+    //     return;
+    // }
     if (_cacheList.size() > 0)
     {
         QOEListIteratorType lit = _cacheList.end();
@@ -100,22 +119,35 @@ void GQDCache::evict()
 // value_type is pair<const key_type, mapped_type>
 void GQDCache::hit(QOECacheMapType::const_iterator it, uint64_t size)
 {
-    it->second->reset_timer();
-    double target_qoe = it->second->qoe;
-    for (QOEListIteratorType pos = _cacheList.begin(); pos != it->second; pos++)
-    {
-        if (pos->getQOE() <= target_qoe)
-        {
-            _cacheList.splice(pos, _cacheList, it->second);
-            return;
-        }
-    }
+    // if (it->second->getQOE() == 0) {
+    //     CacheObject obj = it->first;
+    //     _recycleBinSize -= obj.size;
+    //     _recycleBinMap.erase(obj);
+    // }
+    it->second->hit();
+    // double target_qoe = it->second->getQOE();
+    // for (QOEListIteratorType pos = _cacheList.begin(); pos != it->second; pos++)
+    // {
+    //     if (pos->getQOE() <= target_qoe)
+    //     {
+    //         _cacheList.splice(pos, _cacheList, it->second);
+    //         return;
+    //     }
+    // }
 }
 
 void GQDCache::update()
 {
-    for (auto it : _cacheList)
+    for (auto it = _cacheList.begin(); it != _cacheList.end(); it++)
     {
-        it.update();
+        // if (it->getQOE()) {
+        //     it->update();
+        //     if (it->getQOE() == 0) {
+        //         CacheObject obj = *it;
+        //         _recycleBinMap[obj] = it;
+        //         _recycleBinSize += obj.size;
+        //     }
+        // } 
+        it->update();
     }
 }
