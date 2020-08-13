@@ -11,6 +11,7 @@
 #include <vector>
 #include <queue>
 #include <cmath>
+#include <typeinfo>
 #include "rtt_variants.h"
 #include "gqd_cache.h"
 #include "gd_variants.h"
@@ -119,40 +120,81 @@ void RTT_GQD_Cache::init()
     }
     double range = max_rtt - min_rtt;
     redirect_table = new uint16_t *[client_number];
-    for (int client_index = 0; client_index < client_number; client_index++)
-    {
-        redirect_table[client_index] = new uint16_t[origin_number];
-        for (int origin_index = 0; origin_index < origin_number; origin_index++)
+    if (QOECacheObject::max_time) {
+        for (int client_index = 0; client_index < client_number; client_index++)
         {
-            uint16_t min_rtt_value = clients2caches[client_index][0];
-            std::vector<uint16_t> candidate_cache_index(1, 0);
-            for (int cache_index = 1; cache_index < cache_number; cache_index++)
+            redirect_table[client_index] = new uint16_t[origin_number];
+            for (int origin_index = 0; origin_index < origin_number; origin_index++)
             {
-                if (clients2caches[client_index][cache_index] < min_rtt_value)
+                uint16_t min_rtt_value = clients2caches[client_index][0];
+                std::vector<uint16_t> candidate_cache_index(1, 0);
+                for (int cache_index = 1; cache_index < cache_number; cache_index++)
                 {
-                    candidate_cache_index.clear();
-                    candidate_cache_index.push_back(cache_index);
-                    min_rtt_value = clients2caches[client_index][cache_index];
-                }
-                else if (clients2caches[client_index][cache_index] == min_rtt_value)
-                {
-                    candidate_cache_index.push_back(cache_index);
-                }
-            }
-            if (candidate_cache_index.size() == 1)
-            {
-                redirect_table[client_index][origin_index] = candidate_cache_index[0];
-            }
-            else {
-                uint16_t min_rtt_value = caches2origins[candidate_cache_index[0]][origin_index];
-                uint8_t min_rtt_index = candidate_cache_index[0];
-                for (uint32_t cache_index = 0; cache_index < candidate_cache_index.size(); cache_index++) {
-                    if (candidate_cache_index[cache_index] < min_rtt_value) {
-                        min_rtt_value = candidate_cache_index[cache_index];
-                        min_rtt_index = cache_index;
+                    if (clients2caches[client_index][cache_index] < min_rtt_value)
+                    {
+                        candidate_cache_index.clear();
+                        candidate_cache_index.push_back(cache_index);
+                        min_rtt_value = clients2caches[client_index][cache_index];
+                    }
+                    else if (clients2caches[client_index][cache_index] == min_rtt_value)
+                    {
+                        candidate_cache_index.push_back(cache_index);
                     }
                 }
-                redirect_table[client_index][origin_index] = candidate_cache_index[min_rtt_index];
+                if (candidate_cache_index.size() == 1)
+                {
+                    redirect_table[client_index][origin_index] = candidate_cache_index[0];
+                }
+                else {
+                    uint16_t min_rtt_value = caches2origins[candidate_cache_index[0]][origin_index];
+                    uint8_t min_rtt_index = candidate_cache_index[0];
+                    for (uint32_t cache_index = 0; cache_index < candidate_cache_index.size(); cache_index++) {
+                        if (candidate_cache_index[cache_index] < min_rtt_value) {
+                            min_rtt_value = candidate_cache_index[cache_index];
+                            min_rtt_index = cache_index;
+                        }
+                    }
+                    redirect_table[client_index][origin_index] = candidate_cache_index[min_rtt_index];
+                }
+            }
+        }
+    }
+    else {
+        for (int client_index = 0; client_index < client_number; client_index++)
+        {
+            redirect_table[client_index] = new uint16_t[origin_number];
+            for (int origin_index = 0; origin_index < origin_number; origin_index++)
+            {
+                uint16_t max_rtt_value = clients2caches[client_index][0];
+                std::vector<uint16_t> candidate_cache_index(1, 0);
+                for (int cache_index = 1; cache_index < cache_number; cache_index++)
+                {
+                    if (clients2caches[client_index][cache_index] > max_rtt_value)
+                    {
+                        candidate_cache_index.clear();
+                        candidate_cache_index.push_back(cache_index);
+                        max_rtt_value = clients2caches[client_index][cache_index];
+                    }
+                    else if (clients2caches[client_index][cache_index] == max_rtt_value)
+                    {
+                        candidate_cache_index.push_back(cache_index);
+                    }
+                }
+                if (candidate_cache_index.size() == 1)
+                {
+                    redirect_table[client_index][origin_index] = candidate_cache_index[0];
+                }
+                else {
+                    uint16_t max_rtt_value = caches2origins[candidate_cache_index[0]][origin_index];
+                    uint8_t max_rtt_index = candidate_cache_index[0];
+                    for (uint32_t cache_index = 0; cache_index < candidate_cache_index.size(); cache_index++) {
+                        if (candidate_cache_index[cache_index] > max_rtt_value) {
+                            max_rtt_value = candidate_cache_index[cache_index];
+                            max_rtt_index = cache_index;
+                        }
+                    }
+                    redirect_table[client_index][origin_index] = candidate_cache_index[max_rtt_index];
+                }
             }
         }
     }
