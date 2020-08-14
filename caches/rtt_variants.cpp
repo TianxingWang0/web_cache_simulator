@@ -370,19 +370,31 @@ void RTT_AptSize_Cache::setPar(std::string parName, std::string parValue)
 
 bool RTT_AptSize_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
 {
-    for (int i = 0; i < cache_number; i++)
-    {
-        if (_caches_list[i].lookup(req)) {
-            sum_QoE += rtt2qoe(clients2caches[client][i]);
-            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
-            return true;
-        }
-            
+    target_cache++;
+    if (target_cache == cache_number)
+        target_cache = 0;
+    if (_caches_list[target_cache].lookup(req)) {
+         sum_QoE += rtt2qoe(clients2caches[client][target_cache]);
+         norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache]);
+         return true;
     }
-    _caches_list[redirect_table[client][origin]].admit(req);
-    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
-    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    _caches_list[target_cache].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][target_cache] + caches2origins[target_cache][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache] + norm_caches2origins[target_cache][origin]);
     return false;
+    // for (int i = 0; i < cache_number; i++)
+    // {
+    //     if (_caches_list[i].lookup(req)) {
+    //         sum_QoE += rtt2qoe(clients2caches[client][i]);
+    //         norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
+    //         return true;
+    //     }
+            
+    // }
+    // _caches_list[redirect_table[client][origin]].admit(req);
+    // sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
+    // norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    // return false;
 }
 
 
@@ -421,18 +433,17 @@ void RTT_GDSF_Cache::setPar(std::string parName, std::string parValue)
 
 bool RTT_GDSF_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
 {
-    for (int i = 0; i < cache_number; i++)
-    {
-        if (_caches_list[i].lookup(req)) {
-            sum_QoE += rtt2qoe(clients2caches[client][i]);
-            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
-            return true;
-        }
-            
+    target_cache++;
+    if (target_cache == cache_number)
+        target_cache = 0;
+    if (_caches_list[target_cache].lookup(req)) {
+         sum_QoE += rtt2qoe(clients2caches[client][target_cache]);
+         norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache]);
+         return true;
     }
-    _caches_list[redirect_table[client][origin]].admit(req);
-    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
-    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    _caches_list[target_cache].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][target_cache] + caches2origins[target_cache][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache] + norm_caches2origins[target_cache][origin]);
     return false;
 }
 
@@ -477,18 +488,17 @@ void RTT_LRUK_Cache::setPar(std::string parName, std::string parValue)
 
 bool RTT_LRUK_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
 {
-    for (int i = 0; i < cache_number; i++)
-    {
-        if (_caches_list[i].lookup(req)) {
-            sum_QoE += rtt2qoe(clients2caches[client][i]);
-            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
-            return true;
-        }
-            
+    target_cache++;
+    if (target_cache == cache_number)
+        target_cache = 0;
+    if (_caches_list[target_cache].lookup(req)) {
+         sum_QoE += rtt2qoe(clients2caches[client][target_cache]);
+         norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache]);
+         return true;
     }
-    _caches_list[redirect_table[client][origin]].admit(req);
-    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
-    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    _caches_list[target_cache].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][target_cache] + caches2origins[target_cache][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache] + norm_caches2origins[target_cache][origin]);
     return false;
 }
 
@@ -527,17 +537,16 @@ void RTT_LFUDA_Cache::setPar(std::string parName, std::string parValue)
 
 bool RTT_LFUDA_Cache::request(SimpleRequest *req, uint8_t client, uint8_t origin)
 {
-    for (int i = 0; i < cache_number; i++)
-    {
-        if (_caches_list[i].lookup(req)) {
-            sum_QoE += rtt2qoe(clients2caches[client][i]);
-            norm_sum_QoE += rtt2qoe(norm_clients2caches[client][i]);
-            return true;
-        }
-            
+    target_cache++;
+    if (target_cache == cache_number)
+        target_cache = 0;
+    if (_caches_list[target_cache].lookup(req)) {
+         sum_QoE += rtt2qoe(clients2caches[client][target_cache]);
+         norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache]);
+         return true;
     }
-    _caches_list[redirect_table[client][origin]].admit(req);
-    sum_QoE += rtt2qoe(clients2caches[client][redirect_table[client][origin]] + caches2origins[redirect_table[client][origin]][origin]);
-    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][redirect_table[client][origin]] + norm_caches2origins[redirect_table[client][origin]][origin]);
+    _caches_list[target_cache].admit(req);
+    sum_QoE += rtt2qoe(clients2caches[client][target_cache] + caches2origins[target_cache][origin]);
+    norm_sum_QoE += rtt2qoe(norm_clients2caches[client][target_cache] + norm_caches2origins[target_cache][origin]);
     return false;
 }

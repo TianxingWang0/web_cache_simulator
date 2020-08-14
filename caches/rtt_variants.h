@@ -47,6 +47,7 @@ protected:
 
     double A = -1.0 / 199;
     double B = 20000.0 / 199;
+    uint8_t target_cache = 0;
 
 private:
     GQDCache *caches_list; // Caches cluster

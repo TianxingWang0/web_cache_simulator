@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
                 hits_size += size;
             }
         } 
-        //fack trace
+        // fack trace
         // while (infile >> t >> id >> size) {
         //     reqs++;
         //     reqs_size += size;
