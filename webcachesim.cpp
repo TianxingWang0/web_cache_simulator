@@ -7,6 +7,7 @@
 
 using namespace std;
 ofstream outTp;
+ofstream outHitMap;
 
 int main(int argc, char *argv[]) {
 
@@ -83,6 +84,7 @@ int main(int argc, char *argv[]) {
 
     cerr << "running..." << endl;
 
+    unordered_map<long long, uint32_t> hit_map;
     infile.open(path);
     cout << cacheType << endl;
     if (cacheType.compare("SF") && cacheType.compare("CH") && cacheType.compare("SFM") &&
@@ -114,8 +116,6 @@ int main(int argc, char *argv[]) {
         webcache->init();
         while (infile >> client >> id >> size >> origin) {
             //std::cout << client << " " << id << " " << size << " " << origin << std::endl;
-            if (size == 0)
-                continue;
             reqs++;
             reqs_size += size;
             req->reinit(id, size);
@@ -123,6 +123,12 @@ int main(int argc, char *argv[]) {
             {
                 hits++;
                 hits_size += size;
+                if (hit_map.find(id) == hit_map.end()) {
+                    hit_map[id] = 1;
+                }
+                else {
+                    hit_map[id]++;
+                }
             }
         } 
         // fack trace
@@ -137,6 +143,12 @@ int main(int argc, char *argv[]) {
         //     {
         //         hits++;
         //         hits_size += size;
+        //         if (hit_map.find(id) == hit_map.end()) {
+        //             hit_map[id] = 1;
+        //         }
+        //         else {
+        //             hit_map[id]++;
+        //         }
         //     }
         // }
     }
@@ -192,8 +204,19 @@ int main(int argc, char *argv[]) {
         outTp << "QoE : " << webcache->get_sum_QoE() / reqs << endl;
         outTp << "Normalized QoE : " << webcache->get_norm_sum_QoE() / reqs << endl;
     }
-
     outTp.close();
+    vector< pair<long long, uint32_t> > sorted_hit_map;
+    for (auto& it : hit_map) {
+        sorted_hit_map.push_back(make_pair(it.first, it.second));
+    }
+    sort(sorted_hit_map.begin(), sorted_hit_map.end(),
+         [=](std::pair<long long, uint32_t>& a, std::pair<long long, uint32_t>& b) { return a.second > b.second; });
+    outHitMap.open("hit_count.txt");
+    for (auto& it : sorted_hit_map) {
+        outHitMap << it.first << '\t' << it.second << endl;
+    }
+    outHitMap.close();
+    
     return 0;
 }
 

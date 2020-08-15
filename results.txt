@@ -335,3 +335,19 @@ reqs : 10492	hits : 8521	hit rate : 0.812143
 reqs size : 19130	hit size : 15450	hit size rate : 0.807632
 QoE : 99.8643
 Normalized QoE : 97.8251
+
+time duration : 163ms
+trace : test.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=500 
+reqs : 10492	hits : 8521	hit rate : 0.812143
+reqs size : 19130	hit size : 15450	hit size rate : 0.807632
+QoE : 99.8643
+Normalized QoE : 97.8251
+
+time duration : 149ms
+trace : test.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=500 
+reqs : 10492	hits : 8521	hit rate : 0.812143
+reqs size : 19130	hit size : 15450	hit size rate : 0.807632
+QoE : 99.8643
+Normalized QoE : 97.8251
