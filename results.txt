@@ -351,3 +351,59 @@ reqs : 10492	hits : 8521	hit rate : 0.812143
 reqs size : 19130	hit size : 15450	hit size rate : 0.807632
 QoE : 99.8643
 Normalized QoE : 97.8251
+
+time duration : 162ms
+trace : test.tr
+cacheType : RTT_GQD	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt timer=500 
+reqs : 10492	hits : 8521	hit rate : 0.812143
+reqs size : 19130	hit size : 15450	hit size rate : 0.807632
+QoE : 99.8643
+Normalized QoE : 97.8251
+
+time duration : 90ms
+trace : test.tr
+cacheType : RTT_LRU	cache_size : 1000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt 
+reqs : 10492	hits : 8495	hit rate : 0.809665
+reqs size : 19130	hit size : 15403	hit size rate : 0.805175
+QoE : 98.6479
+Normalized QoE : 74.6199
+
+time duration : 21325ms
+trace : trace1WithOriginId
+cacheType : RTT_LRU	cache_size : 10000	paramSummary : cache_number=60 client_number=30 origin_number=29 file_path=rtt_file.txt 
+reqs : 20710996	hits : 4076427	hit rate : 0.196824
+reqs size : 1359952467533	hit size : 287998524	hit size rate : 0.000211771
+QoE : 98.0372
+Normalized QoE : 33.2061
+
+time duration : 13166ms
+trace : trace1WithOriginId
+cacheType : RTT_LRU	cache_size : 10000	paramSummary : cache_number=30 client_number=30 origin_number=29 file_path=rtt_file.txt 
+reqs : 20710996	hits : 5414153	hit rate : 0.261414
+reqs size : 1359952467533	hit size : 402574734	hit size rate : 0.000296021
+QoE : 91.6803
+Normalized QoE : 95.7337
+
+time duration : 7066ms
+trace : trace2Processed
+cacheType : RTT_GQD	cache_size : 10000	paramSummary : cache_number=30 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 3607126	hits : 473270	hit rate : 0.131204
+reqs size : 87461822242461	hit size : 262496503	hit size rate : 3.00127e-06
+QoE : 94.2793
+Normalized QoE : 95.3836
+
+time duration : 3338ms
+trace : trace2Processed
+cacheType : RTT_LRU	cache_size : 10000	paramSummary : cache_number=30 client_number=30 origin_number=29 file_path=rtt_file.txt 
+reqs : 3607126	hits : 477238	hit rate : 0.132304
+reqs size : 87461822242461	hit size : 264734314	hit size rate : 3.02686e-06
+QoE : 91.1843
+Normalized QoE : 92.7183
+
+time duration : 7586ms
+trace : trace2Processed
+cacheType : RTT_GQD	cache_size : 10000	paramSummary : cache_number=30 client_number=30 origin_number=29 file_path=rtt_file.txt timer=50 
+reqs : 3607126	hits : 473195	hit rate : 0.131183
+reqs size : 87461822242461	hit size : 262482878	hit size rate : 3.00111e-06
+QoE : 94.3242
+Normalized QoE : 95.4364
